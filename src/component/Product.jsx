@@ -9,6 +9,7 @@ const Product = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let componentMounted = true;
     const getProduct = async () => {
       setLoading(true);
       const response = await fetch(`https://fakestoreapi.com/products/${id}`);
@@ -16,6 +17,9 @@ const Product = () => {
       setLoading(false);
     };
     getProduct();
+    return () => {
+      componentMounted = false;
+    };
   }, []);
 
   const Loading = () => {
