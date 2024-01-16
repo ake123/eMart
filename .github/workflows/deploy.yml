@@ -31,7 +31,7 @@ jobs:
       - name: Build HTML files from JSX
         run: |
           npm run build
-          npx babel --out-dir build ./src/components --extensions .jsx
+          npx babel --out-dir build /src/components --extensions .jsx
         env:
           CI: true
 
