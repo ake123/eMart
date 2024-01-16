@@ -1,4 +1,4 @@
-name: Deploy React App to GitHub Pages
+name: Build and Deploy React App to GitHub Pages
 
 on:
   push:
@@ -21,19 +21,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build React App
+      - name: Build HTML files from JSX
         run: |
-          cd src/components
           npm run build
-          mv build/* ../..
+          npx babel --out-dir build src/components --extensions .jsx
+        env:
+          CI: true
 
       - name: Deploy to GitHub Pages
         run: |
           git config --global user.email "your-email@example.com"
           git config --global user.name "Your Name"
           git checkout --orphan gh-pages
-          git --work-tree build add --all
-          git --work-tree build commit -m "Deploy to GitHub Pages"
+          git rm -rf .
+          mv build/* .
+          git add .
+          git commit -m "Deploy to GitHub Pages"
           git push origin HEAD:gh-pages --force
         env:
           CI: true
