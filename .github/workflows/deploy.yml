@@ -1,33 +1,36 @@
-name: Build and Deploy React Website
+name: Deploy React App to GitHub Pages
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    branches:
+      - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "14" # Use the Node.js version that matches your development environment
+          node-version: 14
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build
+      - name: Build React App
         run: npm run build
 
-      # Deployment step, adjust if using a host other than GitHub Pages
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build # Adjust this path to your build directory
+        run: |
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "Your Name"
+          git checkout --orphan gh-pages
+          git --work-tree build add --all
+          git --work-tree build commit -m "Deploy to GitHub Pages"
+          git push origin HEAD:gh-pages --force
+        env:
+          CI: true
