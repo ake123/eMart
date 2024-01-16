@@ -21,10 +21,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Remove babel and install babel-cli
+        run: |
+          npm uninstall babel
+          npm install --save-dev babel-cli
+        working-directory: ./src/components
+        env:
+          CI: true
+
       - name: Build HTML files from JSX
         run: |
           npm run build
-          npx babel --out-dir build src/components --extensions .jsx
+          npx babel --out-dir build ./src/components --extensions .jsx
         env:
           CI: true
 
