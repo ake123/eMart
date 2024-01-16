@@ -25,7 +25,6 @@ jobs:
         run: |
           npm uninstall babel
           npm install --save-dev babel-cli
-        working-directory: ./src/components
         env:
           CI: true
 
