@@ -65,4 +65,9 @@ jobs:
     environment:
       name: github-pages
     steps:
-     
+     - name: Deploy to GitHub Pages
+       id: deployment
+       uses: actions/deploy-pages@v3
+       # The URL of the deployed page will be available in the output
+       with:
+         page_url: ${{ steps.deployment.outputs.page_url }}
